@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
    // res.json();
    // res.sendFile();
 
-   const sql = `SELECT * FROM Study.Post`;
+   const sql = `SELECT * FROM Express.Post`;
    const titleQuery = req.query.title;
    const contentQuery = req.query.content;
 
@@ -43,7 +43,7 @@ router.get('/', (req, res) => {
 router.get('/:title/:content', (req, res) => {
    const titleParam = req.params.title;
    const contentParam = req.params.content;
-   const sql = `SELECT * FROM Study.Post`;
+   const sql = `SELECT * FROM Express.Post`;
 
    connection.query(sql, (error, result) => {
       console.log(result);
@@ -63,11 +63,31 @@ router.get('/:title/:content', (req, res) => {
          res.send('Post Not Found On params');
       }
    })
+});
+
+router.get('/:id', (req, res) => {
+   const id = req.params.id;
+   const sql = `SELECT * FROM Express.Post WHERE id = ${id}`;
+
+   connection.query(sql, (error, result) => {
+      if (error) {
+         console.error(error);
+         res.send('error');
+         return;
+      }
+
+      if (result.length > 0) {
+         res.send(result[0]);
+      } else {
+         res.send('Post Not Found On params')
+      }
+   })
 })
 
+// 게시글 생성하기
 router.post('/', (req, res) => {
    const body = req.body;
-   console.log(body)
+
 
    const { title, content } = body;
 
